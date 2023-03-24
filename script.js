@@ -55,3 +55,40 @@ const renderCountry = function (data) {
 getCountryData('spain')
 getCountryData('portugal')
 getCountryData('germany')
+
+const datosPais = fetch('https://restcountries.com/v3.1/name/${country}')
+datosPais
+  .then((response) => {
+    console.log(response)
+    if (!response.ok) {
+      throw new Error('Pais no encontrado(${response.status})')
+    }
+    return response.json()
+  })
+  .then((response) => {
+    console.log(response)
+    const [data] = JSON.parse(response)
+    renderCountry(data)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+
+const getNeighborData = function (neighbor) {
+  const url = 'https://restcountries.com/v3.1/alpha/${neighbor}'
+  fetch(url)
+    .then((response) => {
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('Pais no encontrado(${response.status})')
+      }
+      return response.json()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .then((response) => {
+      const [data] = response
+      renderCountry(data, 'neighbor')
+    })
+}
